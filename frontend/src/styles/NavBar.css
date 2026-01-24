@@ -1,0 +1,48 @@
+
+@media screen and (min-width: 768px){
+ .nav_root {
+  padding-top: 15px;
+  padding-bottom: 15px;
+ }
+}
+
+@media screen and (min-width: 400px) {
+  .nav_secondary {
+    display: grid;
+    grid-column: 10 / span 4;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .nav_root{
+    display: grid;
+    grid-template-columns: repeat(28, 1fr);
+    gap: 0 12;
+    padding-inline: 20;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid transparent;
+    max-height: 63px;
+    min-height: 59px;
+    background: transparent;
+  }
+  .nav_header {
+    grid-column: 1 / span 6;
+  }
+
+  .nav_primary {
+    grid-column: 7 / span 15;
+    display: grid;
+    gap: 50px;
+  }
+
+  .nav_secondary {
+    grid-column: -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    right: 20px;
+    gap: 40px;
+  }
+}
