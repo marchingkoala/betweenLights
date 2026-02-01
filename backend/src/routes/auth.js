@@ -1,23 +1,25 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const bcrypt = require("bcrypt");
-const pool = require("../db"); // DB connection
+const bcrypt = require('bcrypt');
+const pool = require('../db'); // DB connection
 
 // POST /api/auth/register
-router.post("/register", async (req, res) => {
-  const { email, password, name } = req.body;
+router.post('/register', async (req, res) => {
+  const { email, password, firstName, lastName } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password required" });
+  if (!email || !password || !firstName || !lastName) {
+    return res
+      .status(400)
+      .json({ error: 'Email, password, firstName, and lastName required' });
   }
 
   try {
     // Check if user already exists
-    const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [
+    const userCheck = await pool.query('SELECT * FROM users WHERE email = $1', [
       email,
     ]);
     if (userCheck.rows.length > 0) {
-      return res.status(400).json({ error: "Email already registered" });
+      return res.status(400).json({ error: 'Email already registered' });
     }
 
     // Hash password
@@ -26,15 +28,32 @@ router.post("/register", async (req, res) => {
 
     // Insert new user
     const result = await pool.query(
-      "INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, created_at",
-      [email, hashedPassword, name],
+      `
+      INSERT INTO users (first_name, last_name, email, password_hash)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, email, first_name, last_name, created_at
+      `,
+      [
+        firstName.trim(),
+        lastName.trim(),
+        email.toLowerCase().trim(),
+        hashedPassword,
+      ]
     );
 
     const newUser = result.rows[0];
-    res.status(201).json({ user: newUser });
+    res.status(201).json({
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        createdAt: newUser.created_at,
+      },
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
@@ -48,7 +67,9 @@ router.post('/login', async (req, res) => {
 
   try {
     // Find user by email
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [
+      email,
+    ]);
     if (result.rows.length === 0) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
@@ -56,7 +77,10 @@ router.post('/login', async (req, res) => {
     const user = result.rows[0];
 
     // Compare password with hash
-    const isMatch = await require('bcrypt').compare(password, user.password_hash);
+    const isMatch = await require('bcrypt').compare(
+      password,
+      user.password_hash
+    );
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
@@ -74,11 +98,10 @@ router.post('/login', async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
       },
-      token
+      token,
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
