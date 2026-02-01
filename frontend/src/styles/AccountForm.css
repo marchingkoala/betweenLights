@@ -1,0 +1,88 @@
+.accountContainer {
+    width: 420px;
+    gap: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 85px
+}
+
+.accountText {
+    font-size: 26px;
+    color: black;
+    text-align: left;
+}
+
+.formContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.accountForm {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* input container */
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+/* shared sizing for inputs/buttons */
+.accountInput,
+.signInBtn,
+.createAccountBtn {
+    width: 323.5px;
+    height: 32px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    box-sizing: border-box;
+}
+
+/* inputs */
+.accountInput {
+    border: 1px solid black;
+    outline: none;
+}
+
+/* placeholder styling */
+.accountInput::placeholder {
+    color: black;
+    opacity: 0.5;
+}
+
+/* action container */
+.actionGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+/* buttons */
+.signInBtn {
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.createAccountBtn {
+    border: 1px solid black;
+    background-color: transparent;
+    color: black;
+    cursor: pointer;
+}
+
+/* forgot password link */
+.forgotPasswordLink {
+    margin-top: 1rem;
+    text-decoration: underline;
+    color: black;
+    cursor: pointer;
+}

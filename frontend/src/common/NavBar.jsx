@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/NavBar.css';
 
-const Navbar = () => {
+const Navbar = ({ variant = 'auto' }) => {
   const [hover, setHover] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -81,7 +81,7 @@ const Navbar = () => {
     },
   };
 
-  const isNavbarWhite = hover || isScrolled;
+ const isNavbarWhite = variant === 'dark' ? true : hover || isScrolled;
 
   return (
     <div

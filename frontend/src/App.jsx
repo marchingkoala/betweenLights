@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './common/NavBar';
 import Footer from './common/Footer';
 import LandingPage from './pages/LandingPage';
@@ -13,9 +13,13 @@ import CartPage from './pages/CartPage';
 import './App.css';
 
 function App() {
+  const location = useLocation();
+  const darkPages = ['/login', '/register'];
+  const variant = darkPages.includes(location.pathname) ? 'dark' : 'auto';
+
   return (
     <>
-      <NavBar />
+      <NavBar variant={variant} />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/eyeglasses" element={<EyeglassesPage />} />
