@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {logout} from '../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import '../styles/NavBar.css';
 
 const Navbar = ({ variant = 'auto' }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {user, isAuthenticated} = useSelector((state) => state.auth);
   const [hover, setHover] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -16,6 +21,11 @@ const Navbar = ({ variant = 'auto' }) => {
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   const styles = {
     navbar: {
@@ -117,12 +127,15 @@ const Navbar = ({ variant = 'auto' }) => {
         <Link to="/search" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
           Search
         </Link>
-        <Link to="/login" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          Account
-        </Link>
+        {!isAuthenticated && (<Link to="/login" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>Login</Link>)}
+        {isAuthenticated && (<Link to="/account" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
+        Account</Link>)}
         <Link to="/cart" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
           Cart
         </Link>
+        {isAuthenticated && <button onClick={handleLogout} className="logoutBtn">
+        Logout
+      </button>}
       </div>
     </div>
   );
