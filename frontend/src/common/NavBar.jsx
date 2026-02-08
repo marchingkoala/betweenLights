@@ -133,7 +133,13 @@ const Navbar = ({ variant = 'auto' }) => {
         <Link to="/cart" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
           Cart
         </Link>
-        {isAuthenticated && <button onClick={handleLogout} className="logoutBtn">
+        {isAuthenticated && <button onClick={handleLogout} className="logoutBtn" style={{
+      ...styles.link,
+      background: 'none',
+      border: 'none',
+      padding: 0,
+      color: isNavbarWhite ? 'black' : 'white',
+    }}>
         Logout
       </button>}
       </div>

@@ -1,0 +1,43 @@
+/* AccountPage.css */
+
+.accountRoot {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    margin-top: 100px;
+    margin-bottom: 115px;
+    padding: 0 10px;
+    text-align: left;
+    gap: 100px;
+    justify-content: center;
+}
+
+.leftSection {
+    width: 376px;
+    height:630px;
+    background-color: red;
+    margin-top: 111px;
+}
+
+.rightSection {
+    width: 376px;
+    margin-top: 111px;
+}
+
+.accountHeading {
+    font-size: 26px;
+    margin-bottom: 2.5rem;
+}
+
+.accountSubheading {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.accountSection {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
