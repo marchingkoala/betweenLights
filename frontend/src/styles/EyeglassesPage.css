@@ -1,0 +1,54 @@
+.eyeglassesPage {
+    /* pushes content below fixed main navbar */
+    padding-top: 59px;
+    /* aligns with navbar min-height */
+}
+
+.eyeglassesSubNav {
+    height: 40px;
+    width: 100%;
+    padding-top: 6.2rem;
+    padding-bottom: 1rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.eyeglassesTitle {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Margesh', sans-serif;
+}
+
+.eyeglassesActions {
+    display: flex;
+    gap: 1rem;
+    cursor: pointer;
+    font-size: 0.75rem;
+}
+
+.filterLabel {
+    padding-right: 1.5rem;
+}
+
+.sortLabel {
+    /* no extra styling yet */
+}
+.productPlaceholder {
+    height: auto;
+    padding-top: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-bottom: 5rem;
+}
+
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 4px;
+}

@@ -17,7 +17,7 @@ import './App.css';
 
 function App() {
   const location = useLocation();
-  const darkPages = ['/login', '/register', '/account'];
+  const darkPages = ['/login', '/register', '/account', '/eyeglasses'];
   const variant = darkPages.includes(location.pathname) ? 'dark' : 'auto';
 
   return (
