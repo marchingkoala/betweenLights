@@ -1,18 +1,67 @@
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(4px, 1vw, 24px);
+    /* gap grows/shrinks with viewport */
+}
+
 .productCard {
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
 
+.productMedia {
+    width: 100%;
+    aspect-ratio: 280 / 392;
+    position: relative;
+    /* important */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+/* Real image */
+.productImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
 .productImagePlaceholder {
-    width: 280px;
-    height: 392px;
+    width: 100%;
+    height: 100%;
     background-color: #3b82f6;
-    /* blue placeholder */
+}
+
+/* Arrow button */
+.viewToggleBtn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.viewToggleBtn:hover {
+    background: transparent;
 }
 
 .productInfoContainer {
+    width: 100%;
     padding: 1rem 0.5rem 2.5rem;
     text-align: left;
+    box-sizing: border-box;
 }
 
 .productInfoTop {
