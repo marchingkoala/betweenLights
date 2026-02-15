@@ -86,13 +86,27 @@
     margin-top: 0.75rem;
 }
 
-.colorSwatch {
+/* .colorSwatch {
     width: 15px;
     height: 10px;
     background-color: #000;
-}
+} */
 
 .moreColors {
     font-size: 0.75rem;
     margin-left: 0.25rem;
+}
+
+.colorSwatchBtn {
+    border: none;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.colorSwatchBtn.isActive {
+    outline: 1px solid black;
+    outline-offset: 2px;
 }

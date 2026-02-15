@@ -23,15 +23,19 @@ const EyeglassesPage = () => {
       {/* Products will go here later */}
       <div className='productPlaceholder'>
         <div className="productGrid">
-        {sortedEyeglasses.flatMap((product) =>
-          product.variants.map((variant) => (
-            <ProductCard
-              key={variant.id}
-              product={variant}
-              colorways={product.colors}   // ✅ pass all colors for this style
-            />
-          ))
-        )}
+        {sortedEyeglasses.flatMap((product) => {
+            const variantsByColor = Object.fromEntries(
+              product.variants.map((v) => [v.color, v])
+            );
+            return product.variants.map((variant) => (
+              <ProductCard
+                key={variant.id}
+                product={variant}
+                colorways={product.colors}
+                variantsByColor={variantsByColor} // ✅ NEW
+              />
+            ));
+          })}
       </div>
       </div>
     </div>
