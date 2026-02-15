@@ -13,12 +13,13 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
+import ProductPage from "./pages/ProductPage";
 import './App.css';
 
 function App() {
   const location = useLocation();
-  const darkPages = ['/login', '/register', '/account', '/eyeglasses'];
-  const variant = darkPages.includes(location.pathname) ? 'dark' : 'auto';
+  const darkPages = ['/'];
+  const variant = !darkPages.includes(location.pathname) ? 'dark' : 'auto';
 
   return (
     <>
@@ -30,6 +31,7 @@ function App() {
         <Route path="/sunglasses" element={<SunglassesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/nyc-store" element={<NYCStorePage />} />
+        <Route path="/eyeglasses/product/:slug" element={<ProductPage />} />
         {/* Public-only routes */}
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<LoginPage />} />

@@ -27,3 +27,12 @@ export const groupProductsByStyle = (products) => {
     colors: Array.from(group.colors),
   }));
 };
+
+export function slugify(str = "") {
+  return String(str)
+    .trim()
+    .toLowerCase()
+    .replace(/['"]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+}

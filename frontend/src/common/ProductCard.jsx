@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { slugify } from "../utils/utils.jsx"
 import '../styles/ProductCard.css';
 
 
 const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState(product);
-  
+
   useEffect(() => {
    setSelectedProduct(product);
  }, [product]);
@@ -21,7 +24,7 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
   const sideImage = images?.find((img) => img.view === 'side');
   const activeImage =
     currentView === 'side' && sideImage ? sideImage : frontImage;
-
+  const slug = `${slugify(name)}-${slugify(color)}`;
 
   const handleToggleView = () => {
     if (!sideImage) return;
@@ -46,8 +49,12 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
     gold: '#edbb4d'
   }
 
+  const navigateToProduct = () => {
+    navigate(`/eyeglasses/product/${slug}`)
+  }
+
    return (
-    <div className="productCard">
+    <div className="productCard" onClick={navigateToProduct}>
         <div className="productMedia">
         {activeImage?.url ? (
           <img
