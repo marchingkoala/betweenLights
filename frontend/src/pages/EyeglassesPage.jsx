@@ -12,7 +12,7 @@ const EyeglassesPage = () => {
     <div className="eyeglassesPage">
       {/* Inner nav bar */}
       <div className="eyeglassesSubNav">
-        <div className="eyeglassesTitle">Eyewear</div>
+        <div className="eyeglassesTitle">Eyeglasses</div>
 
         <div className="eyeglassesActions">
           <span className="filterLabel">Filter</span>
@@ -20,7 +20,7 @@ const EyeglassesPage = () => {
         </div>
       </div>
 
-      {/* Products will go here later */}
+      {/* Products Section*/}
       <div className='productPlaceholder'>
         <div className="productGrid">
         {sortedEyeglasses.flatMap((product) => {
@@ -30,6 +30,7 @@ const EyeglassesPage = () => {
             return product.variants.map((variant) => (
               <ProductCard
                 key={variant.id}
+                category={'eyeglasses'}
                 product={variant}
                 colorways={product.colors}
                 variantsByColor={variantsByColor} // ✅ NEW

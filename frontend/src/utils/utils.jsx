@@ -1,3 +1,7 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
+
 export const groupProductsByStyle = (products) => {
   const map = new Map();
 
@@ -36,3 +40,17 @@ export function slugify(str = "") {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)+/g, "");
 }
+
+export const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant" // use "smooth" if you prefer animation
+    });
+  }, [pathname]);
+
+  return null;
+};

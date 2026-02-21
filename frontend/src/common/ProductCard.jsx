@@ -4,7 +4,7 @@ import { slugify } from "../utils/utils.jsx"
 import '../styles/ProductCard.css';
 
 
-const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
+const ProductCard = ({ product, colorways = [], variantsByColor = {}, category }) => {
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
@@ -50,11 +50,11 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
   }
 
   const navigateToProduct = () => {
-    navigate(`/eyeglasses/product/${slug}`)
+    navigate(`/${category}/product/${slug}`)
   }
 
    return (
-    <div className="productCard" onClick={navigateToProduct}>
+    <div className="productCard">
         <div className="productMedia">
         {activeImage?.url ? (
           <img
@@ -77,7 +77,7 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {} }) => {
         )}
       </div>
 
-      <div className="productInfoContainer">
+      <div className="productInfoContainer" onClick={navigateToProduct}>
         <div className="productInfoTop">
           <span className="productName">{name}</span>
           <span className="productPrice">${price}</span>

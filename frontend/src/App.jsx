@@ -14,6 +14,7 @@ import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import ProductPage from "./pages/ProductPage";
+import { ScrollToTop } from './utils/utils';
 import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
   return (
     <>
       <NavBar variant={variant} />
+      <ScrollToTop /> 
       <Routes>
         {/* Public pages */}
         <Route path="/" element={<LandingPage />} />
@@ -31,7 +33,7 @@ function App() {
         <Route path="/sunglasses" element={<SunglassesPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/nyc-store" element={<NYCStorePage />} />
-        <Route path="/eyeglasses/product/:slug" element={<ProductPage />} />
+        <Route path="/:category/product/:slug" element={<ProductPage />} />
         {/* Public-only routes */}
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<LoginPage />} />
