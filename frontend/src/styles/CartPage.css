@@ -1,0 +1,101 @@
+/* Overlay wrapper */
+.cart_overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* Backdrop */
+.cart_backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border: none;
+    background: rgba(142, 142, 142, 0.2);
+    opacity: 0;
+    cursor: pointer;
+    right: 560px;
+    transition: opacity 0.35s ease;
+}
+
+/* Side panel */
+.cart_container {
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    right: 0;
+    width: 560px !important;
+    height: 100%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 2.5rem;
+    padding-inline: 1.5rem;
+
+    background: #fff;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    /* you wrote .3x; assuming .3s */
+    pointer-events: auto;
+}
+
+/* Open state */
+.cart_overlay--open {
+    pointer-events: auto;
+}
+
+.cart_overlay--open .cart_backdrop {
+    opacity: 1;
+}
+
+.cart_container--open {
+    transform: translateX(0);
+}
+
+/* Header */
+.cart_header {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.cart_headerTitle {
+    font-size: 1rem;
+}
+
+/* Close button */
+.cart_closeButton {
+    border: none;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+/* Content */
+.cart_content {
+    scrollbar-width: none;
+    padding-inline: 0.75rem;
+    margin-inline: -0.75rem;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    max-height: 100%;
+    height: 100%;
+}
+
+/* Hide scrollbar in WebKit browsers */
+.cart_content::-webkit-scrollbar {
+    display: none;
+}

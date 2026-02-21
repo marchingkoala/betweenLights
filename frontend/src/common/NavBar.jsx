@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {logout} from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import '../styles/NavBar.css';
+import CartPage from '../pages/CartPage';
 
 const Navbar = ({ variant = 'auto' }) => {
   const dispatch = useDispatch();
@@ -10,6 +11,7 @@ const Navbar = ({ variant = 'auto' }) => {
   const {user, isAuthenticated} = useSelector((state) => state.auth);
   const [hover, setHover] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -130,9 +132,18 @@ const Navbar = ({ variant = 'auto' }) => {
         {!isAuthenticated && (<Link to="/login" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>Login</Link>)}
         {isAuthenticated && (<Link to="/account" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
         Account</Link>)}
-        <Link to="/cart" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
+        <button
+          onClick={() => setIsCartOpen(true)}
+          style={{
+            ...styles.link,
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            color: isNavbarWhite ? 'black' : 'white',
+          }}
+        >
           Cart
-        </Link>
+        </button>
         {isAuthenticated && <button onClick={handleLogout} className="logoutBtn" style={{
       ...styles.link,
       background: 'none',
@@ -143,7 +154,12 @@ const Navbar = ({ variant = 'auto' }) => {
         Logout
       </button>}
       </div>
+      <CartPage
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      />
     </div>
+    
   );
 };
 
