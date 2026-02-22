@@ -4,12 +4,14 @@ const cors = require('cors');
 const pool = require('./db'); // Must match the exported pool
 const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/products');
+const stripeRouter = require('./routes/stripe');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/stripe', stripeRouter);
 app.get('/', (req, res) => res.send('API is running'));
 // serve static files from /public
 app.use(express.static('public'));
