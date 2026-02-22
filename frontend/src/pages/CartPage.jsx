@@ -19,6 +19,11 @@ const CartPage = ({ isOpen, onClose }) => {
     navigate("/nyc-store");
   };
 
+  const handleCheckout = () => {
+    onClose?.();
+    navigate("/checkout");
+  }
+
   const variantLookup = useMemo(() => {
     const map = new Map();
 
@@ -188,7 +193,7 @@ const CartPage = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="cart_footer_action">
-                  <button type="button" className="cart_checkout_btn">
+                  <button type="button" className="cart_checkout_btn" onClick={handleCheckout}>
                     Checkout
                   </button>
                 </div>
