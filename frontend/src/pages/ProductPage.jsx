@@ -1,7 +1,8 @@
-import React, { useMemo, useState }  from 'react';
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useMemo, useState, useEffect }  from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch  } from "react-redux";
 import { groupProductsByStyle, slugify } from "../utils/utils";
+import { addToCart } from '../redux/cartSlice'
 import '../styles/ProductPage.css';
 
 const accordionArray = [
@@ -18,9 +19,12 @@ const accordionArray = [
 const ProductPage = () => {
 
   const { slug, category } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.products?.[category] || []);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [openIndex, setOpenIndex] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
   const sortedProducts = useMemo(
     () => groupProductsByStyle(products),
     [products]
@@ -36,10 +40,61 @@ const ProductPage = () => {
     return { productGroup: null, variant: null };
   }, [sortedProducts, slug]);
 
+  const [selectedVariant, setSelectedVariant] = useState(variant);
+  useEffect(() => {
+    setSelectedVariant(variant);
+  }, [variant]);
+  useEffect(() => {
+  setAddedToCart(false); // ✅ UPDATE: reset when selected variant changes
+}, [selectedVariant?.id]);
+
+const handleAddToCart = () => { // ✅ UPDATE
+  if (!selectedVariant?.id) return;
+
+  dispatch(
+    addToCart({
+      productId: selectedVariant.id, // using variant id as productId
+      quantity: 1,
+    })
+  );
+
+  setAddedToCart(true);
+};
+
   if (!variant) return <div className="productPage_root">Not found</div>;
+  if (!selectedVariant) return <div className="productPage_root">Not found</div>;
 
   const toggleAccordion = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
+  };
+
+  const colorSwatch = {
+    tortoise: '#8a4c1f',
+    brown: '#3e2c1f',
+    black: 'black',
+    crystal: '#d2e3e1',
+    silver: '#8b8b8b',
+    gold: '#edbb4d'
+  }
+  const variantsByColor = useMemo(() => {
+    if (!productGroup?.variants?.length) return {};
+    return Object.fromEntries(productGroup.variants.map((v) => [v.color, v]));
+  }, [productGroup]);
+
+  const colors = useMemo(() => {
+    // prefer productGroup.colors if you have it, otherwise derive from variants
+    if (productGroup?.colors?.length) return productGroup.colors;
+    return Object.keys(variantsByColor);
+  }, [productGroup, variantsByColor]);
+
+  const handleColorSelect = (color) => {
+    const nextVariant = variantsByColor[color];
+    if (!nextVariant) return;
+    setSelectedVariant(nextVariant);
+
+    // (recommended) update URL so refresh/share shows same selected color
+    const nextSlug = `${slugify(nextVariant.name)}-${slugify(nextVariant.color)}`;
+    navigate(`/${category}/product/${nextSlug}`, { replace: true });
   };
 
 return (
@@ -63,31 +118,31 @@ return (
         <div className="productDetail_option">
         <div className="productDetail_optionHeader">
             <div className="productDetail_optionLabel">Color</div>
-            <div className="productDetail_optionValue">{variant.color}</div>
+             <div className="productDetail_optionValue">{selectedVariant.color}</div>
         </div>
 
         <div className="productDetail_swatches">
-            <button
-            type="button"
-            className="productDetail_swatch productDetail_swatch--active"
-            aria-label="Black swatch"
-            />
-            <button
-            type="button"
-            className="productDetail_swatch"
-            aria-label="Black swatch"
-            />
-            <button
-            type="button"
-            className="productDetail_swatch"
-            aria-label="Black swatch"
-            />
-            <button
-            type="button"
-            className="productDetail_swatch"
-            aria-label="Black swatch"
-            />
-        </div>
+              {colors.map((color) => {
+                const isActive = color === selectedVariant.color;
+                const bg = colorSwatch[color?.toLowerCase()] ?? "#000"; // fallback black
+
+                return (
+                  <button
+                    key={color}
+                    type="button"
+                    onClick={() => handleColorSelect(color)}
+                    className={
+                      isActive
+                        ? "productDetail_swatch productDetail_swatch--active"
+                        : "productDetail_swatch"
+                    }
+                    aria-label={`${color} swatch`}
+                    title={color}
+                    style={{ background: bg }} // ✅ UPDATE: dynamic color
+                  />
+                );
+              })}
+            </div>
         </div>
     </div>
 
@@ -100,7 +155,7 @@ return (
             occasions. Designed for comfort and durability, this frame delivers
             effortless style with a premium finish.
         </p>
-        <p>{variant.description}</p>
+        <p>{selectedVariant.description}</p>
     </div>
 
     {/* SKU */}
@@ -108,8 +163,8 @@ return (
 
     {/* Button */}
     <div className="productDetail_button">
-        <button type="button" className="productDetail_addToCart">
-        Add to Cart
+        <button type="button" className="productDetail_addToCart" onClick={handleAddToCart}>
+        {addedToCart ? "Added to Cart!" : "Add to Cart"}
         </button>
     </div>
 

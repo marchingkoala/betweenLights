@@ -12,6 +12,8 @@ const Navbar = ({ variant = 'auto' }) => {
   const [hover, setHover] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const cartItems = useSelector((state) => state.cart.items);
+  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -142,7 +144,12 @@ const Navbar = ({ variant = 'auto' }) => {
             color: isNavbarWhite ? 'black' : 'white',
           }}
         >
-          Cart
+          Cart{" "}
+          {cartCount > 0 && (
+            <span style={{ fontSize: "0.8rem", marginLeft: "2px" }}>
+              ({cartCount})
+            </span>
+          )}
         </button>
         {isAuthenticated && <button onClick={handleLogout} className="logoutBtn" style={{
       ...styles.link,
