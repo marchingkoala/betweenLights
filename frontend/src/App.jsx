@@ -14,7 +14,8 @@ import RegisterPage from './pages/RegisterPage';
 import CartPage from './pages/CartPage';
 import AccountPage from './pages/AccountPage';
 import ProductPage from "./pages/ProductPage";
-import Checkout from "./pages/Checkout"
+import Checkout from "./pages/Checkout";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
 import { ScrollToTop } from './utils/utils';
 import './App.css';
 
@@ -35,7 +36,8 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/nyc-store" element={<NYCStorePage />} />
         <Route path="/:category/product/:slug" element={<ProductPage />} />
-        <Route path="/checkout" element= {<Checkout />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<CheckoutSuccess />} />
         {/* Public-only routes */}
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<LoginPage />} />

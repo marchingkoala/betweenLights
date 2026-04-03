@@ -1,0 +1,52 @@
+.nycStorePage {
+  box-sizing: border-box;
+  padding-top: 59px;
+}
+
+.locationContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 5rem;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.locationTextSection {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: right;
+}
+
+.locationTextSection_line1 {
+  margin-bottom: 1rem;
+  font-weight: normal;
+}
+
+.locationTextSection_line2 {
+  margin-bottom: 1rem;
+  font-weight: normal;
+  font-style: italic;
+  font-family: "Margesh", sans-serif;
+  font-size: 1.2rem;
+}
+
+.locationTextSection_details {
+  margin-bottom: 0;
+  font-weight: normal;
+  line-height: 1.5;
+}
+
+.locationMapSection {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.locationMapSection img {
+  display: block;
+  width: 100%;
+  height: auto;
+}

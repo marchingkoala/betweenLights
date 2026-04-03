@@ -14,6 +14,7 @@ const Navbar = ({ variant = 'auto' }) => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCountLabel = cartCount >= 10 ? "9+" : String(cartCount);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -135,19 +136,21 @@ const Navbar = ({ variant = 'auto' }) => {
         {isAuthenticated && (<Link to="/account" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
         Account</Link>)}
         <button
+          type="button"
           onClick={() => setIsCartOpen(true)}
           style={{
             ...styles.link,
-            background: 'none',
-            border: 'none',
+            background: "none",
+            border: "none",
             padding: 0,
-            color: isNavbarWhite ? 'black' : 'white',
+            color: isNavbarWhite ? "black" : "white",
+            whiteSpace: "nowrap",
           }}
         >
-          Cart{" "}
+          Cart
           {cartCount > 0 && (
             <span style={{ fontSize: "0.8rem", marginLeft: "2px" }}>
-              ({cartCount})
+              ({cartCountLabel})
             </span>
           )}
         </button>
