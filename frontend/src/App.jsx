@@ -46,7 +46,7 @@ function App() {
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<AccountPage />} />
-          <Route path="/cart" element={<CartPage />} />
+          <Route path="/cart" element={<CartPage layout="page" />} />
         </Route>
       </Routes>
       <Footer />

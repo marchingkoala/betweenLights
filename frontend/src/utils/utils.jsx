@@ -17,6 +17,7 @@ export const groupProductsByStyle = (products) => {
         key,
         colors: new Set([p.color]),
         variants: [p],
+        shape: p.shape
       });
       return;
     }
