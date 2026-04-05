@@ -79,7 +79,7 @@ const AccountPage = () => {
           </p>
         </section>
 
-        <section className="accountSection">
+        <section className="accountSection ordersSection">
           <h2 className="accountSubheading">Orders</h2>
           {ordersLoading && <p className="accountOrders_status">Loading orders…</p>}
           {ordersError && (
@@ -129,10 +129,10 @@ const AccountPage = () => {
           )}
         </section>
 
-        <section className="accountSection">
+        {/* <section className="accountSection">
           <h2 className="accountSubheading">Favorites</h2>
           <p>You haven’t added any favorites yet.</p>
-        </section>
+        </section> */}
       </div>
     </div>
   );
