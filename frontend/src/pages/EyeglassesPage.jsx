@@ -124,6 +124,13 @@ const EyeglassesPage = () => {
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [sortMenuOpen]);
 
+  useEffect(() => {
+    if (!filterOpen) {
+      setColorAccordionOpen(false);
+      setShapeAccordionOpen(false);
+    }
+  }, [filterOpen]);
+
   return (
     <div className="eyeglassesPage">
       <div

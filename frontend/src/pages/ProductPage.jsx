@@ -97,20 +97,45 @@ const handleAddToCart = () => { // ✅ UPDATE
     navigate(`/${category}/product/${nextSlug}`, { replace: true });
   };
 
+  const galleryList = Array.isArray(selectedVariant?.images)
+    ? selectedVariant.images.filter((img) => img?.url)
+    : [];
+  const primaryGalleryImg =
+    galleryList.find((img) => img.view === "front") || galleryList[0];
+  const secondaryGalleryImg =
+    galleryList.find(
+      (img) => img.view === "side" && img !== primaryGalleryImg
+    ) || galleryList.find((img) => img !== primaryGalleryImg);
+
 return (
 <div className="productPage_root">
-    {/* Product Image (work later) */}
     <div className="productPage_image">
-    <img className="productImage" src={`${API_BASE_URL}${variant.images[0].url}`}/>
-    <img className="productImage" src={`${API_BASE_URL}${variant.images[1].url}`}/>
+    {primaryGalleryImg?.url ? (
+      <img
+        className="productImage"
+        src={`${API_BASE_URL}${primaryGalleryImg.url}`}
+        alt={`${selectedVariant.name} ${selectedVariant.color}`}
+      />
+    ) : (
+      <div className="productPage_imagePlaceholder" aria-hidden="true">
+        <span className="productPage_imagePlaceholder_text">Coming Soon</span>
+      </div>
+    )}
+    {secondaryGalleryImg?.url ? (
+      <img
+        className="productImage"
+        src={`${API_BASE_URL}${secondaryGalleryImg.url}`}
+        alt=""
+      />
+    ) : null}
     </div>
 
     {/* Product Detail */}
     <div className="productPage_detail">
     {/* Name + Price */}
     <div className="productDetail_name">
-         <h1>{variant.name}</h1>
-        <div className="productDetail_price">${variant.price}</div>
+         <h1>{selectedVariant.name}</h1>
+        <div className="productDetail_price">${selectedVariant.price}</div>
     </div>
 
     {/* Options */}

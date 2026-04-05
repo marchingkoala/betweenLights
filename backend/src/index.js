@@ -5,13 +5,24 @@ const pool = require('./db'); // Must match the exported pool
 const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/products');
 const stripeRouter = require('./routes/stripe');
+const ordersRouter = require('./routes/orders');
+const stripeWebhook = require('./routes/stripeWebhook');
 
 const app = express();
 app.use(cors());
+
+// Stripe webhook needs raw body (must be before express.json)
+app.post(
+  '/api/stripe/webhook',
+  express.raw({ type: 'application/json' }),
+  stripeWebhook
+);
+
 app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/stripe', stripeRouter);
+app.use('/api/orders', ordersRouter);
 app.get('/', (req, res) => res.send('API is running'));
 // serve static files from /public
 app.use(express.static('public'));

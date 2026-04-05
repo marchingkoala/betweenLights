@@ -9,6 +9,7 @@ import "../styles/Checkout.css";
 const Checkout = () => {
   const dispatch = useDispatch();
   const items = useSelector((state) => state.cart.items);
+  const authToken = useSelector((state) => state.auth.token);
   const eyeglasses = useSelector((state) => state.products?.eyeglasses || []);
   const sunglasses = useSelector((state) => state.products?.sunglasses || []);
 
@@ -121,9 +122,14 @@ const Checkout = () => {
 
     setLoading(true);
     try {
+      const headers = {};
+      if (authToken) {
+        headers.Authorization = `Bearer ${authToken}`;
+      }
       const { data } = await axios.post(
         `${API_BASE_URL}/api/stripe/create-checkout-session`,
-        { items: itemsForStripe }
+        { items: itemsForStripe },
+        { headers }
       );
       if (data?.url) {
         window.location.href = data.url;

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import ProductCard from "../common/ProductCard";
 import "../styles/SunglassesPage.css";
@@ -20,6 +20,9 @@ const SunglassesPage = () => {
     [sunglasses]
   );
 
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const actionsRef = useRef(null);
+
   const [filterOpen, setFilterOpen] = useState(false);
   const [colorAccordionOpen, setColorAccordionOpen] = useState(false);
   const [shapeAccordionOpen, setShapeAccordionOpen] = useState(false);
@@ -35,6 +38,9 @@ const SunglassesPage = () => {
       ),
     [sortedSunglasses, appliedColors, appliedShapes]
   );
+
+  /** null = default data order; 'asc' = low→high; 'desc' = high→low */
+  const [priceSort, setPriceSort] = useState(null);
 
   const displayCards = useMemo(() => {
     const rows = [];
@@ -52,8 +58,19 @@ const SunglassesPage = () => {
         rows.push({ product, variant, variantsByColor });
       }
     }
+    if (priceSort === "asc") {
+      rows.sort(
+        (a, b) =>
+          Number(a.variant.price) - Number(b.variant.price)
+      );
+    } else if (priceSort === "desc") {
+      rows.sort(
+        (a, b) =>
+          Number(b.variant.price) - Number(a.variant.price)
+      );
+    }
     return rows;
-  }, [filteredSunglasses, appliedColors]);
+  }, [filteredSunglasses, appliedColors, priceSort]);
 
   const toggleColor = (color) => {
     setSelectedColors((prev) => {
@@ -94,7 +111,26 @@ const SunglassesPage = () => {
     setAppliedShapes(new Set());
     setSelectedColors(new Set());
     setSelectedShapes(new Set());
+    setPriceSort(null);
   };
+
+  useEffect(() => {
+    if (!sortMenuOpen) return;
+    const handlePointerDown = (e) => {
+      if (actionsRef.current && !actionsRef.current.contains(e.target)) {
+        setSortMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [sortMenuOpen]);
+
+  useEffect(() => {
+    if (!filterOpen) {
+      setColorAccordionOpen(false);
+      setShapeAccordionOpen(false);
+    }
+  }, [filterOpen]);
 
   return (
     <div className="sunglassesPage">
@@ -223,7 +259,7 @@ const SunglassesPage = () => {
       <div className="sunglassesSubNav">
         <div className="sunglassesTitle">Sunglasses</div>
 
-        <div className="sunglassesActions">
+        <div className="sunglassesActions" ref={actionsRef}>
           <button
             type="button"
             className="filterLabel"
@@ -231,7 +267,41 @@ const SunglassesPage = () => {
           >
             Filter
           </button>
-          <span className="sortLabel">Sort By</span>
+          <button
+            type="button"
+            className="sortLabel"
+            aria-expanded={sortMenuOpen}
+            aria-haspopup="listbox"
+            onClick={() => setSortMenuOpen((open) => !open)}
+          >
+            Sort By
+          </button>
+          {sortMenuOpen && (
+            <div className="eyeglassesSortMenu" role="listbox">
+              <button
+                type="button"
+                className="eyeglassesSortOption"
+                role="option"
+                onClick={() => {
+                  setPriceSort("asc");
+                  setSortMenuOpen(false);
+                }}
+              >
+                Price, low to high
+              </button>
+              <button
+                type="button"
+                className="eyeglassesSortOption"
+                role="option"
+                onClick={() => {
+                  setPriceSort("desc");
+                  setSortMenuOpen(false);
+                }}
+              >
+                Price, high to low
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

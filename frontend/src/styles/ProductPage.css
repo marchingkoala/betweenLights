@@ -12,10 +12,9 @@
 .productPage_image {
     width: 100%;
     min-height: 600px;
-    display: black;
-    position:relative;
-    /* align-items: flex-start;
-    justify-content: center; */
+    display: flex;
+    flex-direction: column;
+    position: relative;
     grid-column: 2;
     overflow: hidden;
 }
@@ -23,6 +22,27 @@
 .productImage {
     width: 100%;
     height: auto;
+}
+
+.productPage_imagePlaceholder {
+    flex: 1 1 auto;
+    align-self: stretch;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.productPage_imagePlaceholder_text {
+    font-family: "Margesh", sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-style: italic;
+    color: #111;
 }
 /* Right side (details) */
 .productPage_detail {

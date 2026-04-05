@@ -55,7 +55,7 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {}, category }
 
    return (
     <div className="productCard">
-        <div className="productMedia">
+        <div className="productMedia" onClick={navigateToProduct}>
         {activeImage?.url ? (
           <img
             className="productImage"
@@ -63,14 +63,20 @@ const ProductCard = ({ product, colorways = [], variantsByColor = {}, category }
             alt={name}
           />
         ) : (
-          <div className="productImagePlaceholder" />
+          <div className="productImagePlaceholder" aria-hidden="true">
+            <span className="productImagePlaceholder_text">Coming Soon</span>
+          </div>
         )}
 
         {/* Arrow only if side image exists */}
         {sideImage && (
           <button
+            type="button"
             className="viewToggleBtn"
-            onClick={handleToggleView}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleToggleView();
+            }}
           >
             &gt;
           </button>
