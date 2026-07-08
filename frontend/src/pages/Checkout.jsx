@@ -41,20 +41,39 @@ const Checkout = () => {
     return map;
   }, [eyeglasses, sunglasses]);
 
+  const resolveCustomItem = (item) => {
+    const { productId } = item;
+    if (!productId?.startsWith("custom:selena:")) return null;
+    const parts = productId.split(":");
+    // custom:selena:<frameLabel>:<glassLabel>
+    const frameLabel = decodeURIComponent(parts[2] || "Custom");
+    const glassLabel = decodeURIComponent(parts[3] || "Custom");
+    return {
+      variant: {
+        id: productId,
+        name: item.name || "Selena",
+        color: item.color || `${frameLabel} / ${glassLabel}`,
+        price: item.price ?? 128,
+        images: [],
+      },
+      category: "custom",
+    };
+  };
+
   const cartDisplayRows = useMemo(() => {
     const rows = [];
     for (const item of items) {
-      const found = variantLookup.get(item.productId);
+      const found = variantLookup.get(item.productId) || resolveCustomItem(item);
       if (!found) continue;
       const { variant } = found;
       const lineTotal = Number(variant.price) * item.quantity;
-      const imgUrl = variant.images?.[0]?.url;
+      const imgUrl = item.previewImage || (variant.images?.[0]?.url ? `${API_BASE_URL}${variant.images[0].url}` : null);
       rows.push({
         productId: item.productId,
         name: `${variant.name} — ${variant.color}`,
         quantity: item.quantity,
         lineTotal,
-        imageUrl: imgUrl ? `${API_BASE_URL}${imgUrl}` : null,
+        imageUrl: imgUrl,
       });
     }
     return rows;
@@ -63,7 +82,7 @@ const Checkout = () => {
   const lineItems = useMemo(() => {
     const out = [];
     for (const item of items) {
-      const found = variantLookup.get(item.productId);
+      const found = variantLookup.get(item.productId) || resolveCustomItem(item);
       if (!found) continue;
       const { variant } = found;
       const unitAmount = Math.round(Number(variant.price) * 100);

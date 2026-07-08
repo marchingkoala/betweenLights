@@ -14,6 +14,8 @@ export const cartSlice = createSlice({
       );
       if (index !== -1) {
         state.items[index].quantity += action.payload.quantity;
+        const { quantity, ...rest } = action.payload;
+        Object.assign(state.items[index], rest);
       } else {
         state.items.push(action.payload);
       }

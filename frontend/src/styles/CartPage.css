@@ -169,6 +169,10 @@
     cursor: pointer;
 }
 
+.cart_item_imageLink--static {
+    cursor: default;
+}
+
 .cart_item_imageContainer {
     display: flex;
     align-items: center;
@@ -199,6 +203,10 @@
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+}
+
+.cart_item_name--static {
+    cursor: default;
 }
 
 .cart_item_price {

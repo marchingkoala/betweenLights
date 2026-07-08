@@ -43,10 +43,29 @@ const CartPage = ({ isOpen, onClose, layout = "drawer" }) => {
     return map;
   }, [eyeglasses, sunglasses]);
 
+  const resolveCustomItem = (item) => {
+    const { productId } = item;
+    if (!productId?.startsWith("custom:selena:")) return null;
+    const parts = productId.split(":");
+    // custom:selena:<frameLabel>:<glassLabel>
+    const frameLabel = decodeURIComponent(parts[2] || "Custom");
+    const glassLabel = decodeURIComponent(parts[3] || "Custom");
+    return {
+      variant: {
+        id: productId,
+        name: item.name || "Selena",
+        color: item.color || `${frameLabel} / ${glassLabel}`,
+        price: item.price ?? 128,
+        images: [],
+      },
+      category: "custom",
+    };
+  };
+
   const total = items.reduce((sum, item) => {
-    const found = variantLookup.get(item.productId);
+    const found = variantLookup.get(item.productId) || resolveCustomItem(item);
     if (!found) return sum;
-    return sum + found.variant.price * item.quantity;
+    return sum + Number(found.variant.price) * item.quantity;
   }, 0);
 
   const handleGoToProduct = (category, variant) => {
@@ -70,44 +89,62 @@ const CartPage = ({ isOpen, onClose, layout = "drawer" }) => {
 
   const renderCartItems = () =>
     items.map((item) => {
-      const found = variantLookup.get(item.productId);
+      const found = variantLookup.get(item.productId) || resolveCustomItem(item);
       if (!found) return null;
 
       const { variant, category } = found;
-      const imgUrl = variant.images?.[0]?.url;
+      const imgUrl = item.previewImage || (variant.images?.[0]?.url ? `${API_BASE_URL}${variant.images[0].url}` : null);
 
       return (
         <div key={item.productId} className="cart_item">
-          <a
-            className="cart_item_imageLink"
-            onClick={(e) => {
-              e.preventDefault();
-              handleGoToProduct(category, variant);
-            }}
-            href={`/${category}/product/${slugify(variant.name)}-${slugify(variant.color)}`}
-          >
-            <div className="cart_item_imageContainer">
-              {imgUrl ? (
-                <img
-                  className="cart_item_image"
-                  src={`${API_BASE_URL}${imgUrl}`}
-                  alt={`${variant.name} ${variant.color}`}
-                />
-              ) : null}
+          {category === "custom" ? (
+            <div className="cart_item_imageLink cart_item_imageLink--static">
+              <div className="cart_item_imageContainer">
+                {imgUrl ? (
+                  <img
+                    className="cart_item_image"
+                    src={imgUrl}
+                    alt={`${variant.name} ${variant.color}`}
+                  />
+                ) : null}
+              </div>
             </div>
-          </a>
-
-          <div className="cart_item_description">
+          ) : (
             <a
-              className="cart_item_name"
+              className="cart_item_imageLink"
               onClick={(e) => {
                 e.preventDefault();
                 handleGoToProduct(category, variant);
               }}
               href={`/${category}/product/${slugify(variant.name)}-${slugify(variant.color)}`}
             >
-              {variant.name}
+              <div className="cart_item_imageContainer">
+                {imgUrl ? (
+                  <img
+                    className="cart_item_image"
+                    src={imgUrl}
+                    alt={`${variant.name} ${variant.color}`}
+                  />
+                ) : null}
+              </div>
             </a>
+          )}
+
+          <div className="cart_item_description">
+            {category === "custom" ? (
+              <div className="cart_item_name cart_item_name--static">{variant.name}</div>
+            ) : (
+              <a
+                className="cart_item_name"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleGoToProduct(category, variant);
+                }}
+                href={`/${category}/product/${slugify(variant.name)}-${slugify(variant.color)}`}
+              >
+                {variant.name}
+              </a>
+            )}
 
             <div className="cart_item_price">${variant.price}</div>
             <div className="cart_item_color">{variant.color}</div>
