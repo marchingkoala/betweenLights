@@ -113,8 +113,8 @@ const Navbar = ({ variant = 'auto' }) => {
 
       {/* Center Links */}
       <div className="nav_primary" style={styles.nav_primary}>
-        <Link to="/about" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          About Us
+        <Link to="/customization" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
+          3D Customization
         </Link>
         <Link to="/eyeglasses" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
           Eyeglasses

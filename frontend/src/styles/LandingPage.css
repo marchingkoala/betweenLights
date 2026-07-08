@@ -14,10 +14,13 @@
     z-index: 1;
 }
 
-.landingFullMedia img {
-    width: 100vw;
-    height: auto;
-    object-fit: contain;
+.landingFullMedia a {
+    display: block;
+    width: 100%;
+}
+
+.landingFullMedia a img {
+    display: block;
 }
 
 .landingHeroText {

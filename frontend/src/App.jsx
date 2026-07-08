@@ -7,7 +7,7 @@ import Footer from './common/Footer';
 import LandingPage from './pages/LandingPage';
 import EyeglassesPage from './pages/EyeglassesPage';
 import SunglassesPage from './pages/SunglassesPage';
-import AboutPage from './pages/AboutPage';
+import Customization from './pages/Customization';
 import NYCStorePage from './pages/NYCStorePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -33,7 +33,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/eyeglasses" element={<EyeglassesPage />} />
         <Route path="/sunglasses" element={<SunglassesPage />} />
-        <Route path="/about" element={<AboutPage />} />
+        <Route path="/customization" element={<Customization />} />
         <Route path="/nyc-store" element={<NYCStorePage />} />
         <Route path="/:category/product/:slug" element={<ProductPage />} />
         <Route path="/checkout" element={<Checkout />} />

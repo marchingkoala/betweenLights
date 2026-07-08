@@ -45,8 +45,10 @@ const LandingPage = () => {
   return (
 <div className='landingPage'>
   <section className='landingFullMedia' ref={heroSectionRef}>
+    <Link to="/customization">
     <img src="/landingPage/main_landingHero.png" alt="Landing Hero" />
-    <div className={`landingHeroText ${!isTextVisible ? 'hidden' : ''} ${isTextFixed ? 'fixed' : ''}`}>New York Collection</div>
+    <div className={`landingHeroText ${!isTextVisible ? 'hidden' : ''} ${isTextFixed ? 'fixed' : ''}`}>Customize your look</div>
+    </Link>
   </section>
   <section className='landingSection'>
     <Link to="/sunglasses" className="landingSectionImage">
