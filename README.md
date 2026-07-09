@@ -35,24 +35,6 @@ The product is built as a **monorepo** with a React SPA (`frontend/`) and an Exp
 
 ---
 
-## Demo
-
-| Asset                       | Link                                                    |
-| --------------------------- | ------------------------------------------------------- |
-| **Live Demo**               | _[Placeholder — add deployed URL]_                      |
-| **Screenshots**             | _[Placeholder — add `/docs/screenshots` or image URLs]_ |
-| **GIF / Video Walkthrough** | _[Placeholder — add Loom or GIF link]_                  |
-
-**Suggested captures for portfolio**
-
-1. Landing page (desktop + mobile)
-2. Eyeglasses catalog with filter drawer
-3. 3D customization color swatches
-4. Cart drawer + Stripe checkout flow
-5. Account order history
-
----
-
 ## Features
 
 ### Shopping & catalog
