@@ -50,3 +50,46 @@
   width: 100%;
   height: auto;
 }
+
+@media (max-width: 1279px) {
+  .locationContainer {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .locationContainer {
+    flex-direction: column;
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    gap: 2.5rem;
+  }
+
+  .locationTextSection {
+    text-align: left;
+  }
+}
+
+@media (max-width: 767px) {
+  .locationContainer {
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .locationContainer {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .locationTextSection_line2 {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+  }
+}

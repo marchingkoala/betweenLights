@@ -98,3 +98,34 @@
     color: red;
     text-align: left;
 }
+
+@media (max-width: 767px) {
+    .accountContainer {
+        width: 100%;
+        max-width: 420px;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        box-sizing: border-box;
+        margin-top: 5rem;
+    }
+
+    .accountInput,
+    .signInBtn,
+    .createAccountBtn {
+        width: 100%;
+        max-width: 323.5px;
+        min-height: 44px;
+    }
+
+    .accountText {
+        font-size: clamp(1.35rem, 5vw, 26px);
+    }
+}
+
+@media (max-width: 480px) {
+    .accountContainer {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        gap: 2.5rem;
+    }
+}

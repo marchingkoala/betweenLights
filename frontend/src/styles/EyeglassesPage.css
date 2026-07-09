@@ -197,3 +197,70 @@
     background: #111;
     color: #fff;
 }
+
+@media (max-width: 1279px) {
+    .eyeglassesSubNav,
+    .productPlaceholder {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .eyeglassesSubNav,
+    .productPlaceholder {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .productGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .eyeglassesSubNav {
+        height: auto;
+        min-height: 40px;
+        padding-top: 5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .eyeglassesActions {
+        flex-wrap: wrap;
+    }
+
+    .productPlaceholder {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-bottom: 3rem;
+    }
+
+    .productGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .eyeglassesFilter_panel.cart_container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .eyeglassesSubNav,
+    .productPlaceholder {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .productGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .filterLabel {
+        padding-right: 0.75rem;
+    }
+}

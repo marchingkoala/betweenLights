@@ -1,0 +1,30 @@
+/* Shared responsive helpers — desktop base styles live in component CSS files.
+   Breakpoints (desktop-first overrides only):
+   @media (max-width: 1279px) — small laptops
+   @media (max-width: 1024px) — tablets
+   @media (max-width: 767px)  — phones
+   @media (max-width: 480px)  — small phones
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+}
+
+#root {
+  width: 100%;
+  min-width: 0;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+}

@@ -17,7 +17,6 @@
 .leftSection {
     width: 376px;
     height:630px;
-    background-color: red;
     margin-top: 111px;
 }
 
@@ -123,4 +122,57 @@
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+    .accountRoot {
+        flex-direction: column;
+        height: auto;
+        min-height: auto;
+        gap: 2rem;
+        padding-top: 59px;
+        margin-top: 0;
+        margin-bottom: 3rem;
+        align-items: center;
+    }
+
+    .leftSection,
+    .rightSection {
+        width: 100%;
+        max-width: 376px;
+        margin-top: 2rem;
+        height: auto;
+    }
+
+    .leftSection {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 767px) {
+    .accountRoot {
+        padding: 59px 1.25rem 2rem;
+        gap: 1.5rem;
+    }
+
+    .leftSection,
+    .rightSection {
+        margin-top: 1rem;
+        max-width: 100%;
+    }
+
+    .accountHeading {
+        font-size: clamp(1.35rem, 5vw, 26px);
+    }
+
+    .accountOrders_cardHeader {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .accountRoot {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }

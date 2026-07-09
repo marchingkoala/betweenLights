@@ -1,6 +1,6 @@
 .landingPage {
     position: relative;
-    width: 100vw;
+    width: 100%;
 }
 
 .landingFullMedia {
@@ -46,17 +46,9 @@
     pointer-events: none;
 }
 
-@media screen and (max-width: 768px) {
-    .landingHeroText {
-        bottom: 15px;
-        left: 15px;
-        font-size: 1rem;
-    }
-}
-
 .landingSection {
     display: flex;
-    width: 100vw;
+    width: 100%;
     position: relative;
     height: 925px;
 }
@@ -69,6 +61,7 @@
     cursor: pointer;
     transition: opacity 0.3s ease;
     position: relative;
+    text-decoration: none;
 }
 
 .landingSectionImage:hover {
@@ -101,7 +94,7 @@
 }
 
 .landingNYCSection {
-    width: 100vw;
+    width: 100%;
     height: 630px;
     position: relative;
     display: flex;
@@ -113,8 +106,71 @@
     margin: 0;
 }
 
-@media screen and (max-width: 1023px) {
+@media (max-width: 1024px) {
     .landingFullMedia img {
         max-height: 100vh;
+    }
+
+    .landingSection {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .landingSectionImage {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 11;
+    }
+
+    .landingSectionImage img {
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .landingNYCSection {
+        height: auto;
+        min-height: 400px;
+        padding: 4rem 1.5rem;
+        box-sizing: border-box;
+    }
+}
+
+@media (max-width: 767px) {
+    .landingHeroText {
+        bottom: 15px;
+        left: 15px;
+        font-size: 1rem;
+    }
+
+    .landingSectionImage {
+        aspect-ratio: 4 / 3;
+    }
+
+    .landingSectionText {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+        bottom: 12px;
+        left: 12px;
+    }
+
+    .landingNYCSection {
+        min-height: 280px;
+        padding: 3rem 1.25rem;
+    }
+
+    .landingNYCSection p {
+        font-size: clamp(0.9rem, 3.5vw, 1rem);
+        text-align: center;
+        line-height: 1.5;
+    }
+}
+
+@media (max-width: 480px) {
+    .landingSectionImage {
+        aspect-ratio: 3 / 4;
+    }
+
+    .landingNYCSection {
+        min-height: 220px;
+        padding: 2.5rem 1rem;
     }
 }

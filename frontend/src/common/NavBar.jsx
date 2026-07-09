@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {logout} from '../redux/authSlice';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { logout } from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import '../styles/NavBar.css';
 import CartPage from '../pages/CartPage';
@@ -8,13 +8,15 @@ import CartPage from '../pages/CartPage';
 const Navbar = ({ variant = 'auto' }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {user, isAuthenticated} = useSelector((state) => state.auth);
+  const location = useLocation();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [hover, setHover] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.items);
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const cartCountLabel = cartCount >= 10 ? "9+" : String(cartCount);
+  const cartCountLabel = cartCount >= 10 ? '9+' : String(cartCount);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,154 +24,155 @@ const Navbar = ({ variant = 'auto' }) => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial scroll position
+    handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isMenuOpen) return undefined;
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsMenuOpen(false);
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [isMenuOpen]);
+
   const handleLogout = () => {
+    setIsMenuOpen(false);
     dispatch(logout());
     navigate('/login');
   };
 
-  const styles = {
-    navbar: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(8, 1fr)',
-      alignItems: 'center',
-      width: '100vw',
-      boxSizing: 'border-box',
-      padding: '15px 20px',
-      maxHeight: '63px',
-      minHeight: '59px',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      zIndex: 1000,
-      backgroundColor: 'transparent',
-      borderBottom: '1px solid transparent',
-      transition: 'background-color 0.3s ease',
-    },
-    navbarHover: {
-      backgroundColor: 'white',
-    },
-    nav_header: {
-         display: 'grid',
-      gridColumn: '1 / 2',
-      textDecoration: 'none',
-      wordBreak: 'break-word',
-      zIndex: 3,
-      width: '100%',
-      margin: 0,
-      padding: 0,
-       position: 'relative',
-    },
-    nav_primary: {
-      gridColumn: '2 / 7',
-      display: 'flex',
-      justifyContent: 'center',
-      gap: '50px',
-    },
-    nav_secondary: {
-      gridColumn: '7 / 9',
-      display: 'flex',
-      justifyContent: 'flex-end',
-      gap: '50px',
-      alignItems: 'center',
-      justifySelf: 'end',
-      zIndex: 10,
-       position: 'relative',
-       padding: '0 0 0 2px'
-    },
-    link: {
-      textDecoration: 'none',
-      fontSize: '0.95rem',
-      cursor: 'pointer',
-      transition: 'color 0.3s ease',
-    },
-    brand: {
-      fontWeight: 'bold',
-      fontSize: '1.2rem',
-      textDecoration: 'none',
-      cursor: 'pointer',
-      transition: 'color 0.3s ease',
-    },
+  const handleOpenCart = () => {
+    setIsMenuOpen(false);
+    setIsCartOpen(true);
   };
 
- const isNavbarWhite = variant === 'dark' ? true : hover || isScrolled;
+  const isNavbarWhite = variant === 'dark' ? true : hover || isScrolled;
+
+  const cartButton = (
+    <button type="button" className="nav_link nav_cartBtn" onClick={handleOpenCart}>
+      Cart
+      {cartCount > 0 && (
+        <span className="nav_cartCount">({cartCountLabel})</span>
+      )}
+    </button>
+  );
 
   return (
-    <div
-      style={{ ...styles.navbar, ...(isNavbarWhite ? styles.navbarHover : {}) }}
+    <header
+      className={`navbar ${isNavbarWhite ? 'navbar--light' : ''}`}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Store Name */}
-      <div className="nav_header" style={styles.nav_header}>
-        <Link to="/" style={{ ...styles.brand, color: isNavbarWhite ? 'black' : 'white' }}>
+      <div className="nav_header">
+        <Link to="/" className="nav_brand">
           Between Lights
         </Link>
       </div>
 
-      {/* Center Links */}
-      <div className="nav_primary" style={styles.nav_primary}>
-        <Link to="/customization" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          3D Customization
-        </Link>
-        <Link to="/eyeglasses" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          Eyeglasses
-        </Link>
-        <Link to="/sunglasses" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          Sunglasses
-        </Link>
-        <Link to="/nyc-store" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          NYC Store
-        </Link>
+      <nav className="nav_primary nav_primary--desktop" aria-label="Main">
+        <Link to="/customization" className="nav_link">3D Customization</Link>
+        <Link to="/eyeglasses" className="nav_link">Eyeglasses</Link>
+        <Link to="/sunglasses" className="nav_link">Sunglasses</Link>
+        <Link to="/nyc-store" className="nav_link">NYC Store</Link>
+      </nav>
+
+      <div className="nav_secondary nav_secondary--desktop">
+        <Link to="/search" className="nav_link">Search</Link>
+        {!isAuthenticated && (
+          <Link to="/login" className="nav_link">Login</Link>
+        )}
+        {isAuthenticated && (
+          <Link to="/account" className="nav_link">Account</Link>
+        )}
+        {cartButton}
+        {isAuthenticated && (
+          <button type="button" onClick={handleLogout} className="nav_link logoutBtn">
+            Logout
+          </button>
+        )}
       </div>
 
-      {/* Right Links */}
-      <div className="nav_secondary" style={styles.nav_secondary}>
-        <Link to="/search" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-          Search
-        </Link>
-        {!isAuthenticated && (<Link to="/login" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>Login</Link>)}
-        {isAuthenticated && (<Link to="/account" style={{ ...styles.link, color: isNavbarWhite ? 'black' : 'white' }}>
-        Account</Link>)}
+      <div className="nav_mobileActions">
+        {cartButton}
         <button
           type="button"
-          onClick={() => setIsCartOpen(true)}
-          style={{
-            ...styles.link,
-            background: "none",
-            border: "none",
-            padding: 0,
-            color: isNavbarWhite ? "black" : "white",
-            whiteSpace: "nowrap",
-          }}
+          className={`nav_menuBtn ${isMenuOpen ? 'nav_menuBtn--open' : ''}`}
+          aria-expanded={isMenuOpen}
+          aria-controls="nav-mobile-menu"
+          aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          onClick={() => setIsMenuOpen((open) => !open)}
         >
-          Cart
-          {cartCount > 0 && (
-            <span style={{ fontSize: "0.8rem", marginLeft: "2px" }}>
-              ({cartCountLabel})
-            </span>
-          )}
+          <span className="nav_menuIcon" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
         </button>
-        {isAuthenticated && <button onClick={handleLogout} className="logoutBtn" style={{
-      ...styles.link,
-      background: 'none',
-      border: 'none',
-      padding: 0,
-      color: isNavbarWhite ? 'black' : 'white',
-    }}>
-        Logout
-      </button>}
       </div>
+
+      <div
+        id="nav-mobile-menu"
+        className={`nav_menuOverlay ${isMenuOpen ? 'nav_menuOverlay--open' : ''}`}
+        aria-hidden={!isMenuOpen}
+      >
+        <div
+          className="nav_menuBackdrop"
+          onClick={() => setIsMenuOpen(false)}
+          aria-hidden="true"
+        />
+        <nav className="nav_menuPanel" aria-label="Mobile">
+          <Link to="/customization" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+            3D Customization
+          </Link>
+          <Link to="/eyeglasses" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+            Eyeglasses
+          </Link>
+          <Link to="/sunglasses" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+            Sunglasses
+          </Link>
+          <Link to="/nyc-store" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+            NYC Store
+          </Link>
+          <Link to="/search" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+            Search
+          </Link>
+          {!isAuthenticated && (
+            <Link to="/login" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+              Login
+            </Link>
+          )}
+          {isAuthenticated && (
+            <Link to="/account" className="nav_menuLink" onClick={() => setIsMenuOpen(false)}>
+              Account
+            </Link>
+          )}
+          {isAuthenticated && (
+            <button type="button" className="nav_menuLink" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
+        </nav>
+      </div>
+
       <CartPage
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
       />
-    </div>
-    
+    </header>
   );
 };
 

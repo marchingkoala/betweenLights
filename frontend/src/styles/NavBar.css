@@ -1,48 +1,277 @@
-
-@media screen and (min-width: 768px){
- .nav_root {
-  padding-top: 15px;
-  padding-bottom: 15px;
- }
+/* Desktop base — matches original inline layout exactly */
+.navbar {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 20px;
+  max-height: 63px;
+  min-height: 59px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s ease;
 }
 
-@media screen and (min-width: 400px) {
-  .nav_secondary {
-    display: grid;
-    grid-column: 10 / span 4;
-  }
+.navbar--light {
+  background-color: white;
 }
 
-@media screen and (min-width: 1024px) {
-  .nav_root{
-    display: grid;
-    grid-template-columns: repeat(28, 1fr);
-    gap: 0 12;
-    padding-inline: 20;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid transparent;
-    max-height: 63px;
-    min-height: 59px;
-    background: transparent;
-  }
-  .nav_header {
-    grid-column: 1 / span 6;
-  }
+.nav_header {
+  display: grid;
+  grid-column: 1 / 2;
+  text-decoration: none;
+  word-break: break-word;
+  z-index: 3;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
 
+.nav_brand {
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.nav_primary {
+  grid-column: 2 / 7;
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+}
+
+.nav_secondary {
+  grid-column: 7 / 9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 50px;
+  align-items: center;
+  justify-self: end;
+  z-index: 10;
+  position: relative;
+  padding: 0 0 0 2px;
+}
+
+.nav_link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.navbar:not(.navbar--light) .nav_link,
+.navbar:not(.navbar--light) .nav_brand {
+  color: white;
+}
+
+.navbar--light .nav_link,
+.navbar--light .nav_brand {
+  color: black;
+}
+
+.nav_cartCount {
+  font-size: 0.8rem;
+  margin-left: 2px;
+}
+
+/* Mobile controls — hidden on desktop */
+.nav_mobileActions,
+.nav_menuOverlay {
+  display: none;
+}
+
+/* Small laptops */
+@media (max-width: 1279px) {
   .nav_primary {
-    grid-column: 7 / span 15;
-    display: grid;
-    gap: 50px;
+    gap: 32px;
   }
 
   .nav_secondary {
-    grid-column: -1;
+    gap: 24px;
+  }
+}
+
+/* Tablets — tighter spacing, keep inline nav */
+@media (max-width: 1024px) {
+  .nav_primary {
+    gap: 20px;
+  }
+
+  .nav_secondary {
+    gap: 16px;
+  }
+
+  .nav_link,
+  .nav_brand {
+    font-size: 0.9rem;
+  }
+}
+
+/* Phones — hamburger layout */
+@media (max-width: 767px) {
+  .navbar {
+    grid-template-columns: 1fr auto;
+    padding: 15px 16px;
+  }
+
+  .nav_primary--desktop,
+  .nav_secondary--desktop {
+    display: none;
+  }
+
+  .nav_mobileActions {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem;
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  .nav_menuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .nav_menuIcon {
+    position: relative;
+    width: 20px;
+    height: 14px;
+  }
+
+  .nav_menuIcon span {
     position: absolute;
-    right: 20px;
-    gap: 40px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform 0.25s ease, opacity 0.25s ease, top 0.25s ease;
+  }
+
+  .nav_menuIcon span:nth-child(1) {
+    top: 0;
+  }
+
+  .nav_menuIcon span:nth-child(2) {
+    top: 6px;
+  }
+
+  .nav_menuIcon span:nth-child(3) {
+    top: 12px;
+  }
+
+  .nav_menuBtn--open .nav_menuIcon span:nth-child(1) {
+    top: 6px;
+    transform: rotate(45deg);
+  }
+
+  .nav_menuBtn--open .nav_menuIcon span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav_menuBtn--open .nav_menuIcon span:nth-child(3) {
+    top: 6px;
+    transform: rotate(-45deg);
+  }
+
+  .navbar:not(.navbar--light) .nav_menuBtn {
+    color: white;
+  }
+
+  .navbar--light .nav_menuBtn {
+    color: black;
+  }
+
+  .nav_cartBtn {
+    min-height: 44px;
+    padding: 0 0.25rem;
+  }
+
+  /* Mobile menu drawer */
+  .nav_menuOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 1999;
+    pointer-events: none;
+  }
+
+  .nav_menuOverlay--open {
+    pointer-events: auto;
+  }
+
+  .nav_menuBackdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .nav_menuOverlay--open .nav_menuBackdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav_menuPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: min(320px, 85vw);
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 5rem 1.5rem 2rem;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    pointer-events: auto;
+    overflow-y: auto;
+  }
+
+  .nav_menuOverlay--open .nav_menuPanel {
+    transform: translateX(0);
+  }
+
+  .nav_menuLink {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.5rem 0;
+    text-decoration: none;
+    font-size: 0.95rem;
+    color: #111;
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+  }
+
+  .nav_menuLink + .nav_menuLink {
+    border-top: 1px solid #e9e9e9;
   }
 }

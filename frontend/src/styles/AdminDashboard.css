@@ -1,0 +1,35 @@
+.adminDashboard {
+  box-sizing: border-box;
+  padding-top: 80px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.adminDashboard h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.adminDashboard p {
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .adminDashboard {
+    padding-top: 5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminDashboard {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}

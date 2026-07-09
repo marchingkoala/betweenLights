@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSoldProducts } from '../redux/adminSlice';
+import '../styles/AdminDashboard.css';
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const AdminDashboard = () => {
   }, [dispatch, user?.role, token])
   
   return (
-    <div style={{ paddingTop: "80px", paddingLeft: "2rem", paddingRight: "2rem" }}>
+    <div className="adminDashboard">
       <h1>Admin Dashboard</h1>
       <p>Admin-only area</p>
     </div>

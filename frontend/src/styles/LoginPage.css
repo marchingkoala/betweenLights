@@ -7,3 +7,12 @@
     background-color: white;
     align-items: center;
 }
+
+@media (max-width: 767px) {
+    .accountRoot {
+        margin-top: 0;
+        min-height: calc(100vh - 59px);
+        padding-top: 59px;
+        height: auto;
+    }
+}

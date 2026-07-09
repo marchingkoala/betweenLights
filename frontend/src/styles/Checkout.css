@@ -194,3 +194,39 @@
   max-width: 520px;
   margin: 0 auto;
 }
+
+@media (max-width: 767px) {
+  .checkout_title {
+    padding-top: 5rem;
+  }
+
+  .checkoutDiscountGift {
+    flex-wrap: wrap;
+  }
+
+  .checkoutDiscountGift_apply {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout_root,
+  .checkout_empty {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .checkoutItemList_imageWrap {
+    width: 96px;
+    height: 80px;
+  }
+
+  .checkoutItemList_image {
+    max-height: 80px;
+  }
+
+  .checkoutItemList_item {
+    height: auto;
+    min-height: 80px;
+  }
+}
