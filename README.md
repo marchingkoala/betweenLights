@@ -35,6 +35,18 @@ The product is built as a **monorepo** with a React SPA (`frontend/`) and an Exp
 
 ---
 
+## Demo
+
+### Landing Page
+
+![Landing page screenshot](docs/frontPage.png)
+
+### 3D Customization
+
+![3D frame and lens color customization demo](docs/3dCustom.gif)
+
+---
+
 ## Features
 
 ### Shopping & catalog
