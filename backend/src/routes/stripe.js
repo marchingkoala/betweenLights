@@ -4,6 +4,7 @@ const { optionalAuth } = require('../middleware/auth');
 
 const router = express.Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const pool = require('../db');
 
 router.post('/create-checkout-session', optionalAuth, async (req, res) => {
   try {
@@ -11,6 +12,31 @@ router.post('/create-checkout-session', optionalAuth, async (req, res) => {
 
     if (!Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ error: 'items array required' });
+    }
+
+    const uuidRe =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+    for (const item of items) {
+      if (!item?.name || typeof item.name !== 'string') {
+        return res.status(400).json({ error: 'Invalid item name' });
+      }
+
+      if (!Number.isInteger(item.unitAmount) || item.unitAmount <= 0) {
+        return res.status(400).json({ error: 'Invalid item unitAmount' });
+      }
+
+      if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
+        return res.status(400).json({ error: 'Invalid item quantity' });
+      }
+
+      const isCustom =
+        typeof item.productId === 'string' &&
+        item.productId.startsWith('custom:');
+
+      if (!isCustom && !uuidRe.test(item.productId)) {
+        return res.status(400).json({ error: 'Invalid productId' });
+      }
     }
 
     const sessionParams = {
@@ -33,6 +59,24 @@ router.post('/create-checkout-session', optionalAuth, async (req, res) => {
     }
 
     const session = await stripe.checkout.sessions.create(sessionParams);
+
+    for (const item of items) {
+      const isCustom =
+        typeof item.productId === 'string' &&
+        item.productId.startsWith('custom:');
+      await pool.query(
+        `INSERT INTO checkout_session_items
+     (stripe_checkout_session_id, product_id, quantity, name, unit_amount)
+     VALUES ($1, $2, $3, $4, $5)`,
+        [
+          session.id,
+          isCustom ? null : item.productId,
+          item.quantity,
+          item.name,
+          item.unitAmount,
+        ]
+      );
+    }
 
     res.json({ url: session.url });
   } catch (err) {

@@ -48,7 +48,7 @@ const handleLoginAndNavigate = async (credentials) => {
 
   return (
     <div className="accountRoot">
- <AccountForm
+      <AccountForm
         text="Log in to check order status, order history, and make checking out faster. No Account? Sign up below."
         inputs={[
           {

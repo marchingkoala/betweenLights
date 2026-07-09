@@ -16,6 +16,8 @@ import AccountPage from './pages/AccountPage';
 import ProductPage from "./pages/ProductPage";
 import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
+import AdminDashboard from './pages/AdminDashboard';
+import AdminRoute from './routes/AdminRoute';
 import { ScrollToTop } from './utils/utils';
 import './App.css';
 
@@ -47,6 +49,9 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<AccountPage />} />
           <Route path="/cart" element={<CartPage layout="page" />} />
+        </Route>
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminDashboard />} />
         </Route>
       </Routes>
       <Footer />

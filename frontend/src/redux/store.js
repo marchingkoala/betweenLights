@@ -3,6 +3,7 @@ import productsReducer from './productsSlice';
 import favoritesReducer from './favoritesSlice';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
+import adminReducer from './adminSlice';
 
 import {
   persistStore,
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   favorites: favoritesReducer,
   cart: cartReducer,
   auth: authReducer,
+  admin: adminReducer,
 });
 
 const persistConfig = {

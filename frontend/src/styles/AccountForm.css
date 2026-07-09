@@ -86,3 +86,15 @@
     color: black;
     cursor: pointer;
 }
+
+.inputField {
+    display: flex;
+    flex-direction: column;
+}
+
+.errorMessage {
+    margin: 0;
+    font-size: 0.8rem;
+    color: red;
+    text-align: left;
+}

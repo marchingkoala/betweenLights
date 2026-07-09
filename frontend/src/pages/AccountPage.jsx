@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../styles/AccountPage.css';
 
@@ -11,7 +12,9 @@ const AccountPage = () => {
   const [orders, setOrders] = useState(null);
   const [ordersError, setOrdersError] = useState(null);
   const [ordersLoading, setOrdersLoading] = useState(true);
-
+  const isAdmin = user?.role === 'admin';
+  const navigate = useNavigate();
+  
   useEffect(() => {
     if (!token) {
       setOrders([]);
@@ -77,6 +80,11 @@ const AccountPage = () => {
             <strong>Member since:</strong>{' '}
             {new Date(user.created_at).toLocaleDateString()}
           </p>
+          {isAdmin && (
+            <button className="accountAdminButton" onClick={() => navigate('/admin')}>
+              Admin Dashboard
+            </button>
+          )}
         </section>
 
         <section className="accountSection ordersSection">

@@ -21,6 +21,7 @@
 
 .landingFullMedia a img {
     display: block;
+    width: 100%;
 }
 
 .landingHeroText {

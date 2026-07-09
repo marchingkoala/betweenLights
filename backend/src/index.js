@@ -7,6 +7,7 @@ const productsRouter = require('./routes/products');
 const stripeRouter = require('./routes/stripe');
 const ordersRouter = require('./routes/orders');
 const stripeWebhook = require('./routes/stripeWebhook');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 app.use(cors());
@@ -26,6 +27,7 @@ app.use('/api/orders', ordersRouter);
 app.get('/', (req, res) => res.send('API is running'));
 // serve static files from /public
 app.use(express.static('public'));
+app.use('/api/admin', adminRouter);
 
 // Test DB connection
 app.get('/test-db', async (req, res) => {

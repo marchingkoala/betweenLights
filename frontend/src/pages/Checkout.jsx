@@ -87,6 +87,7 @@ const Checkout = () => {
       const { variant } = found;
       const unitAmount = Math.round(Number(variant.price) * 100);
       out.push({
+        productId: item.productId,
         name: `${variant.name} — ${variant.color}`,
         unitAmount,
         quantity: item.quantity,

@@ -70,13 +70,15 @@ const RegisterPage = () => {
                 name: 'email',
                 value: formData.email,
                 onChange: handleChange,
-                required: true},
+                required: true,
+                error:error
+              },
                 {type: 'password',
                 placeholder: 'Password',
                 name: 'password',
                 value: formData.password,
                 onChange: handleChange,
-                required: true},
+                required: true}
             ]}
             primaryButtonLabel={loading ? "Submitting..." : "Submit"}
             secondaryButtonLabel="Cancel"
@@ -85,11 +87,6 @@ const RegisterPage = () => {
             linkTo="/login"
             onSecondaryClick={() => navigate('/')}
             />
-             {error && (
-        <div style={{ marginTop: "12px", color: "red", fontSize: "0.9rem" }}>
-          {error}
-        </div>
-      )}
         </div>
     );
 };

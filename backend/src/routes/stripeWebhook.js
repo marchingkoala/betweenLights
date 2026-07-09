@@ -82,20 +82,53 @@ async function handleCheckoutSessionCompleted(session) {
       orderId,
     ]);
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
-      limit: 100,
-    });
+    const savedItemsRes = await client.query(
+      `SELECT product_id, quantity, name, unit_amount
+       FROM checkout_session_items
+       WHERE stripe_checkout_session_id = $1`,
+      [session.id]
+    );
 
-    for (const li of lineItems.data) {
-      const qty = li.quantity || 1;
-      const unitAmount =
-        qty > 0 ? Math.round(li.amount_total / qty) : li.amount_total;
-      const name = li.description || 'Item';
-      await client.query(
-        `INSERT INTO order_items (order_id, name, quantity, unit_amount)
-         VALUES ($1, $2, $3, $4)`,
-        [orderId, name, qty, unitAmount]
+    if (savedItemsRes.rows.length === 0) {
+      throw new Error(
+        `No checkout_session_items found for session ${session.id}`
       );
+    }
+
+    for (const row of savedItemsRes.rows) {
+      await client.query(
+        `INSERT INTO order_items (order_id, product_id, name, quantity, unit_amount)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [
+          orderId,
+          row.product_id,
+          row.name,
+          row.quantity,
+          row.unit_amount,
+        ]
+      );
+
+      if (row.product_id) {
+        const stockRes = await client.query(
+          `UPDATE products
+           SET stock_units = stock_units - $1
+           WHERE id = $2 AND stock_units >= $1
+           RETURNING id, stock_units`,
+          [row.quantity, row.product_id]
+        );
+
+        if (stockRes.rows.length === 0) {
+          throw new Error(
+            `Insufficient stock for product ${row.product_id} (session ${session.id})`
+          );
+        }
+
+        await client.query(
+          `INSERT INTO inventory_movements (product_id, order_id, movement_type, quantity)
+           VALUES ($1, $2, 'sale', $3)`,
+          [row.product_id, orderId, -row.quantity]
+        );
+      }
     }
 
     await client.query('COMMIT');

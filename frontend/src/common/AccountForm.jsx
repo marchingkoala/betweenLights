@@ -24,6 +24,7 @@ const AccountForm = ({
           {/* Inputs */}
           <div className="inputGroup">
             {inputs.map((input, idx) => (
+              <div className="inputField">
               <input
                 key={idx}
                 className="accountInput"
@@ -34,6 +35,10 @@ const AccountForm = ({
                 onChange={input.onChange}
                 required={input.required || false}
               />
+              {input.error && (
+                <div className="errorMessage">{input.error}</div>
+              )}
+              </div>
             ))}
           </div>
 
