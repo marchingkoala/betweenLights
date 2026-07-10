@@ -10,6 +10,11 @@ const initialState = {
   loading: false,
   error: null,
   lastFetchedAt: null,
+
+  orders: [],
+  ordersLoading: false,
+  ordersError: null,
+  ordersLastFetchedAt: null,
 };
 
 export const fetchSoldProducts = createAsyncThunk(
@@ -31,6 +36,24 @@ export const fetchSoldProducts = createAsyncThunk(
   }
 );
 
+export const fetchOrders = createAsyncThunk(
+  'admin/fetchOrders',
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/admin/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.error || 'Failed to load orders'
+      );
+    }
+  }
+);
+
 const adminSlice = createSlice({
   name: 'admin',
   initialState,
@@ -39,6 +62,10 @@ const adminSlice = createSlice({
       state.soldProducts = [];
       state.error = null;
       state.lastFetchedAt = null;
+
+      state.orders = [];
+      state.ordersError = null;
+      state.ordersLastFetchedAt = null;
     },
   },
   extraReducers: (builder) => {
@@ -56,6 +83,19 @@ const adminSlice = createSlice({
       .addCase(fetchSoldProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchOrders.pending, (state) => {
+        state.ordersLoading = true;
+        state.ordersError = null;
+      })
+      .addCase(fetchOrders.fulfilled, (state, action) => {
+        state.ordersLoading = false;
+        state.orders = action.payload;
+        state.ordersLastFetchedAt = new Date().toISOString();
+      })
+      .addCase(fetchOrders.rejected, (state, action) => {
+        state.ordersLoading = false;
+        state.ordersError = action.payload;
       });
   },
 });
