@@ -1,5 +1,6 @@
 const Stripe = require('stripe');
 const pool = require('../db');
+const { syncOrderById } = require('../../service/orderSync');
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -133,6 +134,15 @@ async function handleCheckoutSessionCompleted(session) {
 
     await client.query('COMMIT');
     console.log('Order persisted:', orderNumber, orderId);
+
+    // Best-effort real-time mirror into Airtable. Never let a failure here
+    // affect the webhook response — Stripe would otherwise retry the whole
+    // event, and the order is already safely persisted above regardless.
+    try {
+      await syncOrderById(orderId);
+    } catch (airtableErr) {
+      console.error('Airtable sync failed for order', orderId, airtableErr);
+    }
   } catch (e) {
     await client.query('ROLLBACK');
     console.error('Order persist failed:', e);
