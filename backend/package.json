@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "seed:orders": "node scripts/seedTestOrders.js",
-    "sync:airtable": "node scripts/syncAirtable.js"
+    "sync:airtable": "node scripts/syncAirtable.js",
+    "db:schema": "psql \"$DATABASE_URL\" -f db/migrations/001_schema.sql",
+    "db:seed": "psql \"$DATABASE_URL\" -f db/seeds/001_products.sql && psql \"$DATABASE_URL\" -f db/seeds/002_admin.sql",
+    "db:setup": "npm run db:schema && npm run db:seed"
   },
   "keywords": [],
   "author": "",

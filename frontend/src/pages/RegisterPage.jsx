@@ -4,6 +4,9 @@ import axios from 'axios';
 import '../styles/LoginPage.css';
 import AccountForm from '../common/AccountForm';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 const RegisterPage = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -25,7 +28,7 @@ const RegisterPage = () => {
     try {
       setLoading(true);
 
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/register`, {
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         email: formData.email.trim().toLowerCase(),

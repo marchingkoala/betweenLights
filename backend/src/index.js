@@ -10,7 +10,11 @@ const stripeWebhook = require('./routes/stripeWebhook');
 const adminRouter = require('./routes/admin');
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  })
+);
 
 // Stripe webhook needs raw body (must be before express.json)
 app.post(

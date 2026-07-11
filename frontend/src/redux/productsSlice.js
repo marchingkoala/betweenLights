@@ -1,6 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+
 const initialState = {
   eyeglasses: [],
   sunglasses: [],
@@ -13,7 +16,7 @@ export const fetchEyeglasses = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/api/products?category=eyeglasses'
+        `${API_BASE_URL}/api/products?category=eyeglasses`
       );
       if (res.status === 200) {
         // Use the existing action to set data into store
@@ -31,7 +34,7 @@ export const fetchSunglasses = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       const res = await axios.get(
-        'http://localhost:5000/api/products?category=sunglasses'
+        `${API_BASE_URL}/api/products?category=sunglasses`
       );
       if (res.status === 200) {
         // Use the existing action to set data into store
