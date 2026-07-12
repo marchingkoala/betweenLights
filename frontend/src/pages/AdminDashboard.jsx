@@ -19,7 +19,14 @@ const AdminDashboard = () => {
   return (
     <div className="adminDashboard">
       <h1>Admin Dashboard</h1>
-      <p>Admin-only area</p>
+      <iframe
+        className="airtable-embed"
+        src="https://airtable.com/embed/appZNOiF4rsQDRklv/shrOanTF2EARMJV3S"
+        frameBorder="0"
+        width="100%"
+        height="900"
+        style={{ background: 'transparent', border: '1px solid #ccc' }}
+      />
     </div>
   );
 };
