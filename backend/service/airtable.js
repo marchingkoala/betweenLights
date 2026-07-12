@@ -9,6 +9,7 @@ const base = new Airtable({ apiKey: AIRTABLE_TOKEN }).base(AIRTABLE_BASE_ID);
 
 const CUSTOMERS_TABLE = 'Customers';
 const ORDERS_TABLE = 'Orders';
+const ITEMS_TABLE = 'Items';
 
 function chunk(array, size) {
   const chunks = [];
@@ -45,4 +46,11 @@ async function upsertOrders(orders) {
   const records = orders.map((fields) => ({ fields }));
   return injectRecords(ORDERS_TABLE, records, 'Order Number');
 }
-module.exports = { base, upsertCustomers, upsertOrders };
+
+// injecting items for inventory
+async function upsertItems(items) {
+  const records = items.map((fields) => ({ fields }));
+  return injectRecords(ITEMS_TABLE, records, 'Item ID');
+}
+
+module.exports = { base, upsertCustomers, upsertOrders, upsertItems };

@@ -27,6 +27,18 @@ function toOrderFields(row, customerRecordId) {
   };
 }
 
+function toItemFields(row) {
+  return {
+    'Item ID': row.id,
+    Name: row.name,
+    Category: row.category,
+    Color: row.color,
+    Shape: row.shape,
+    Price: Number(row.price),
+    Stock: row.stock_units,
+  };
+}
+
 async function loadOrderById(orderId) {
   const result = await pool.query(
     `SELECT
@@ -52,11 +64,15 @@ async function loadOrderById(orderId) {
 async function syncOrderById(orderId) {
   const row = await loadOrderById(orderId);
   if (!row) {
-    console.warn(`syncOrderById: order ${orderId} not found, skipping Airtable sync`);
+    console.warn(
+      `syncOrderById: order ${orderId} not found, skipping Airtable sync`
+    );
     return;
   }
   if (!row.user_email) {
-    console.warn(`syncOrderById: order ${orderId} has no user account email, skipping Airtable sync`);
+    console.warn(
+      `syncOrderById: order ${orderId} has no user account email, skipping Airtable sync`
+    );
     return;
   }
 
@@ -79,4 +95,5 @@ module.exports = {
   buildCustomerName,
   toCustomerFields,
   toOrderFields,
+  toItemFields,
 };

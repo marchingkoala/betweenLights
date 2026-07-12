@@ -1,8 +1,32 @@
 require('dotenv').config();
 
 const pool = require('../src/db');
-const { upsertCustomers, upsertOrders } = require('../service/airtable');
-const { toCustomerFields, toOrderFields } = require('../service/orderSync');
+const {
+  upsertCustomers,
+  upsertOrders,
+  upsertItems,
+} = require('../service/airtable');
+const {
+  toCustomerFields,
+  toOrderFields,
+  toItemFields,
+} = require('../service/orderSync');
+
+async function loadProductsFromDb() {
+  const result = await pool.query(`
+    SELECT
+      id,
+      name,
+      price,
+      category,
+      shape,
+      color,
+      stock_units
+    FROM products
+    ORDER BY category ASC, name ASC
+  `);
+  return result.rows;
+}
 
 async function loadOrdersFromDb() {
   const result = await pool.query(`
@@ -37,12 +61,20 @@ function dedupeCustomers(orders) {
 }
 
 async function main() {
+  // Catalog sync is independent of orders — always hydrate Items first.
+  console.log('Loading products from Postgres...');
+  const products = await loadProductsFromDb();
+  console.log(`Upserting ${products.length} items into Airtable...`);
+  if (products.length > 0) {
+    await upsertItems(products.map(toItemFields));
+  }
+
   console.log('Loading orders from Postgres...');
   const orders = await loadOrdersFromDb();
   console.log(`Loaded ${orders.length} orders`);
 
   if (orders.length === 0) {
-    console.log('Nothing to sync.');
+    console.log('No orders to sync. Items sync complete.');
     return;
   }
 
