@@ -1,5 +1,5 @@
 const pool = require('../src/db');
-const { upsertCustomers, upsertOrders } = require('./airtable');
+const { upsertCustomers, upsertOrders, upsertItems } = require('./airtable');
 
 function buildCustomerName(row) {
   const name = `${row.first_name || ''} ${row.last_name || ''}`.trim();
@@ -58,9 +58,31 @@ async function loadOrderById(orderId) {
   return result.rows[0] || null;
 }
 
+// Products sold on this order (skips custom builds where product_id is null).
+// Stock is read after the webhook transaction commits, so Airtable gets the
+// post-decrement inventory count.
+async function loadProductsForOrder(orderId) {
+  const result = await pool.query(
+    `SELECT DISTINCT
+       p.id,
+       p.name,
+       p.price,
+       p.category,
+       p.shape,
+       p.color,
+       p.stock_units
+     FROM order_items oi
+     JOIN products p ON p.id = oi.product_id
+     WHERE oi.order_id = $1
+       AND oi.product_id IS NOT NULL`,
+    [orderId]
+  );
+  return result.rows;
+}
+
 // Real-time sync for a single order — used by the Stripe webhook right after
-// an order is persisted. Kept separate from the bulk `syncAirtable.js` script
-// so a single checkout only costs 2 Airtable API calls, not a full resync.
+// an order is persisted. Syncs customer + order, then refreshes Stock on any
+// catalog items that were sold (custom/Selena lines have no product_id).
 async function syncOrderById(orderId) {
   const row = await loadOrderById(orderId);
   if (!row) {
@@ -87,10 +109,16 @@ async function syncOrderById(orderId) {
   }
 
   await upsertOrders([toOrderFields(row, customerRecord.id)]);
+
+  const products = await loadProductsForOrder(orderId);
+  if (products.length > 0) {
+    await upsertItems(products.map(toItemFields));
+  }
 }
 
 module.exports = {
   loadOrderById,
+  loadProductsForOrder,
   syncOrderById,
   buildCustomerName,
   toCustomerFields,

@@ -135,9 +135,10 @@ async function handleCheckoutSessionCompleted(session) {
     await client.query('COMMIT');
     console.log('Order persisted:', orderNumber, orderId);
 
-    // Best-effort real-time mirror into Airtable. Never let a failure here
-    // affect the webhook response — Stripe would otherwise retry the whole
-    // event, and the order is already safely persisted above regardless.
+    // Best-effort real-time mirror into Airtable (customer, order, and
+    // updated Stock on sold catalog items). Never let a failure here affect
+    // the webhook response — Stripe would otherwise retry the whole event,
+    // and the order is already safely persisted above regardless.
     try {
       await syncOrderById(orderId);
     } catch (airtableErr) {
