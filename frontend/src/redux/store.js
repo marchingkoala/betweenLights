@@ -37,6 +37,15 @@ const migrations = {
     }
     return Promise.resolve(state);
   },
+  // `auth` (which holds the JWT) is no longer persisted to localStorage, since
+  // a JS-readable token sitting in storage indefinitely is an XSS liability.
+  // This strips any `auth` blob left over from before that change so an old
+  // token isn't silently rehydrated on the next load.
+  2: (state) => {
+    if (!state) return Promise.resolve(state);
+    const { auth, ...rest } = state;
+    return Promise.resolve(rest);
+  },
 };
 
 const rootReducer = combineReducers({
@@ -49,10 +58,13 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  version: 1,
+  version: 2,
   storage,
   migrate: createMigrate(migrations, { debug: false }),
-  whitelist: ['products', 'favorites', 'cart', 'auth'],
+  // `auth` is intentionally excluded: it holds the JWT, and persisting it to
+  // localStorage would leave it readable by any JS on the page (XSS risk)
+  // indefinitely. Users simply re-authenticate after a refresh/new session.
+  whitelist: ['products', 'favorites', 'cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
