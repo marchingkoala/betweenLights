@@ -1,0 +1,125 @@
+.searchRoot {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+    min-height: 100vh;
+    width: 100%;
+    background-color: white;
+    align-items: center;
+}
+
+.searchContainer {
+    width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 85px;
+}
+
+.searchTitle {
+    margin: 0;
+    font-size: 26px;
+    color: black;
+    text-align: center;
+}
+
+.searchForm {
+    display: flex;
+    width: 100%;
+    gap: 0.625rem;
+}
+
+.searchInput {
+    flex: 1;
+    min-width: 0;
+    height: 32px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    box-sizing: border-box;
+    border: 1px solid black;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: black;
+    opacity: 0.5;
+}
+
+.searchBtn {
+    height: 32px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    box-sizing: border-box;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.searchSuggestions {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10rem;
+    padding: 0 5rem 5rem;
+}
+
+.searchSuggestions_title {
+    margin: 0 0 1.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Margesh', sans-serif;
+    text-align: left;
+}
+
+@media (max-width: 1024px) {
+    .searchSuggestions {
+        padding: 0 2rem 3rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .searchRoot {
+        margin-top: 0;
+        min-height: calc(100vh - 59px);
+        padding-top: 5rem;
+        height: auto;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+        box-sizing: border-box;
+    }
+
+    .searchContainer {
+        width: 100%;
+        max-width: 480px;
+    }
+
+    .searchTitle {
+        font-size: clamp(1.35rem, 5vw, 26px);
+    }
+
+    .searchInput,
+    .searchBtn {
+        min-height: 44px;
+    }
+
+    .searchSuggestions {
+        margin-top: 3rem;
+        padding: 0 1.5rem 3rem;
+        margin-left: -1.25rem;
+        margin-right: -1.25rem;
+        width: calc(100% + 2.5rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .searchContainer {
+        gap: 1.25rem;
+    }
+
+    .searchSuggestions {
+        padding: 0 1rem 2rem;
+    }
+}

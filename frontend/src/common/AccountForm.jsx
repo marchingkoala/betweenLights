@@ -4,6 +4,7 @@ import '../styles/AccountForm.css';
 
 const AccountForm = ({
   text,
+  subText,
   inputs = [],
   primaryButtonLabel = 'Submit',
   secondaryButtonLabel = 'Secondary',
@@ -17,8 +18,10 @@ const AccountForm = ({
     <div className="accountContainer">
       <div className="textContainer">
         <p className="accountText">{text}</p>
+      <div>
+        <p style={{marginTop: '0px', marginBottom: '0px', fontSize: '14px'}} className="subText">{subText}</p>
       </div>
-
+      </div>
       <div className="formContainer">
         <form className="accountForm" onSubmit={onSubmit}>
           {/* Inputs */}

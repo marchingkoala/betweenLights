@@ -50,6 +50,7 @@ const handleLoginAndNavigate = async (credentials) => {
     <div className="accountRoot">
       <AccountForm
         text="Log in to check order status, order history, and make checking out faster. No Account? Sign up below."
+        subText = "To test the dashboard: email: admin@admin.com and password: Admin123!"
         inputs={[
           {
             type: 'email',

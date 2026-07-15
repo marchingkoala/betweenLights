@@ -18,6 +18,8 @@ import Checkout from "./pages/Checkout";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './routes/AdminRoute';
+import SearchPage from './pages/SearchPage';
+import SearchResultPage from './pages/SearchResultPage';
 import { ScrollToTop } from './utils/utils';
 import './App.css';
 
@@ -37,6 +39,8 @@ function App() {
         <Route path="/sunglasses" element={<SunglassesPage />} />
         <Route path="/customization" element={<Customization />} />
         <Route path="/nyc-store" element={<NYCStorePage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/search/results" element={<SearchResultPage />} />
         <Route path="/:category/product/:slug" element={<ProductPage />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<CheckoutSuccess />} />
