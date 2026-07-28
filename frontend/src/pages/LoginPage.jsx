@@ -5,6 +5,7 @@ import AccountForm from '../common/AccountForm';
 import '../styles/LoginPage.css';
 import {loginUser} from '../redux/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import Loading  from './Loading.jsx'
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -46,7 +47,8 @@ const handleLoginAndNavigate = async (credentials) => {
     handleLoginAndNavigate(formData);
 }
 
-  return (
+  return loading ? <Loading /> :
+   (
     <div className="accountRoot">
       <AccountForm
         text="Log in to check order status, order history, and make checking out faster. No Account? Sign up below."
